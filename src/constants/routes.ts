@@ -34,7 +34,6 @@ export const ROUTES = {
 } as const;
 
 // Type-safe route utility functions
-type RouteSegments = typeof ROUTES;
 type SiteRoutes = keyof typeof ROUTES.SITE;
 type AuthRoutes = keyof typeof ROUTES.AUTH;
 type ConsoleRoutes = keyof typeof ROUTES.CONSOLE;
@@ -46,7 +45,7 @@ export type ConsoleRoute = (typeof ROUTES.CONSOLE)[ConsoleRoutes];
 
 // Dynamic route builder with type checking
 export function buildRoute(
-  basePath: ConsoleRoute | AuthRoute | SiteRoute,
+  basePath: string,
   params?: Record<string, string | number>
 ): string {
   let route = basePath;

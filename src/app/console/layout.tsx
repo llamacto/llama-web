@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { LucideIcon, BarChart3, Settings, Home, Users, ShoppingCart, Package, ListFilter, Trash2, Bell, LogOut } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { ROUTES } from "@/constants/routes";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,27 +25,27 @@ interface NavItem {
 const mainNavItems: NavItem[] = [
   {
     title: "Dashboard",
-    href: "/console",
+    href: ROUTES.CONSOLE.HOME,
     icon: Home,
   },
   {
     title: "Analytics",
-    href: "/console/analytics",
+    href: ROUTES.CONSOLE.ANALYTICS,
     icon: BarChart3,
   },
   {
     title: "Users",
-    href: "/console/users",
+    href: ROUTES.CONSOLE.USERS,
     icon: Users,
   },
   {
     title: "Orders",
-    href: "/console/orders",
+    href: ROUTES.CONSOLE.ORDERS,
     icon: ShoppingCart,
   },
   {
     title: "Products",
-    href: "/console/products",
+    href: ROUTES.CONSOLE.PRODUCTS,
     icon: Package,
   },
 ];
@@ -52,17 +53,17 @@ const mainNavItems: NavItem[] = [
 const secondaryNavItems: NavItem[] = [
   {
     title: "Settings",
-    href: "/console/settings",
+    href: ROUTES.CONSOLE.SETTINGS,
     icon: Settings,
   },
   {
     title: "Filters",
-    href: "/console/filters",
+    href: ROUTES.CONSOLE.FILTERS,
     icon: ListFilter,
   },
   {
     title: "Trash",
-    href: "/console/trash",
+    href: ROUTES.CONSOLE.TRASH,
     icon: Trash2,
   },
 ];
@@ -78,7 +79,7 @@ export default function ConsoleLayout({
     <div className="flex min-h-screen flex-col bg-muted/40">
       <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
         <Link
-          href="/console"
+          href={ROUTES.CONSOLE.HOME}
           className="flex items-center gap-2 font-semibold"
         >
           <Package className="h-6 w-6" />
@@ -121,7 +122,7 @@ export default function ConsoleLayout({
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem>Account Settings</DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href="/login" className="flex items-center">
+                <Link href={ROUTES.AUTH.LOGIN} className="flex items-center">
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Logout</span>
                 </Link>
@@ -178,7 +179,7 @@ export default function ConsoleLayout({
             </div>
             <div className="mt-auto p-4">
               <Link
-                href="/"
+                href={ROUTES.SITE.HOME}
                 className="flex h-8 items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
               >
                 <span>Return to Site</span>
