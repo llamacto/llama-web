@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "header": "Dashboard Overview",
+    "type": "metrics",
+    "status": "active",
+    "target": "15%",
+    "limit": "20%",
+    "reviewer": "John Smith"
+  },
+  {
+    "id": 2,
+    "header": "Recent Orders",
+    "type": "table",
+    "status": "active",
+    "target": "10%",
+    "limit": "15%",
+    "reviewer": "Jane Cooper"
+  },
+  {
+    "id": 3,
+    "header": "Traffic Sources",
+    "type": "chart",
+    "status": "inactive",
+    "target": "5%",
+    "limit": "12%",
+    "reviewer": "Michael Johnson"
+  },
+  {
+    "id": 4,
+    "header": "User Activity",
+    "type": "metrics",
+    "status": "active",
+    "target": "18%",
+    "limit": "25%",
+    "reviewer": "Sarah Davis"
+  },
+  {
+    "id": 5,
+    "header": "Sales Overview",
+    "type": "chart",
+    "status": "active",
+    "target": "12%",
+    "limit": "20%",
+    "reviewer": "Robert Wilson"
+  },
+  {
+    "id": 6,
+    "header": "Inventory Status",
+    "type": "table",
+    "status": "inactive",
+    "target": "8%",
+    "limit": "15%",
+    "reviewer": "Emily Thompson"
+  },
+  {
+    "id": 7,
+    "header": "Customer Feedback",
+    "type": "metrics",
+    "status": "active",
+    "target": "20%",
+    "limit": "30%",
+    "reviewer": "David Garcia"
+  },
+  {
+    "id": 8,
+    "header": "Marketing Campaigns",
+    "type": "chart",
+    "status": "active",
+    "target": "15%",
+    "limit": "22%",
+    "reviewer": "Lisa Martinez"
+  },
+  {
+    "id": 9,
+    "header": "Performance Overview",
+    "type": "metrics",
+    "status": "inactive",
+    "target": "10%",
+    "limit": "18%",
+    "reviewer": "William Anderson"
+  },
+  {
+    "id": 10,
+    "header": "Revenue Analysis",
+    "type": "chart",
+    "status": "active",
+    "target": "25%",
+    "limit": "35%",
+    "reviewer": "Jessica Taylor"
+  }
+]
