@@ -3,13 +3,13 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 /**
- * C端前台站点共享布局
- * 包含导航栏和页脚
+ * Site layout for public pages
+ * Includes navigation bar and footer
  */
 export default function SiteLayout({ children }: PropsWithChildren) {
   return (
     <div className="flex min-h-screen flex-col">
-      {/* 导航栏 */}
+      {/* Navigation bar */}
       <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-sm">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-6">
@@ -23,88 +23,95 @@ export default function SiteLayout({ children }: PropsWithChildren) {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="h-6 w-6"
+                className="h-6 w-6 text-primary"
               >
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
               </svg>
-              <span className="text-xl font-bold">Brand</span>
+              <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Llamacto
+              </span>
             </Link>
 
-            {/* 导航链接 */}
+            {/* Navigation links */}
             <nav className="hidden md:flex items-center gap-6">
               <Link href="/" className="text-sm font-medium transition-colors hover:text-primary">
-                首页
+                Home
               </Link>
-              <Link href="/products" className="text-sm font-medium transition-colors hover:text-primary">
-                产品
+              <Link href="/features" className="text-sm font-medium transition-colors hover:text-primary">
+                Features
               </Link>
-              <Link href="/about" className="text-sm font-medium transition-colors hover:text-primary">
-                关于我们
+              <Link href="/docs" className="text-sm font-medium transition-colors hover:text-primary">
+                Documentation
               </Link>
-              <Link href="/contact" className="text-sm font-medium transition-colors hover:text-primary">
-                联系我们
+              <Link href="/pricing" className="text-sm font-medium transition-colors hover:text-primary">
+                Pricing
+              </Link>
+              <Link href="/console" className="text-sm font-medium transition-colors hover:text-primary">
+                Demo
               </Link>
             </nav>
           </div>
 
-          {/* 用户操作区 */}
+          {/* User actions */}
           <div className="flex items-center gap-4">
             <Link href="/login">
-              <Button variant="ghost" size="sm">登录</Button>
+              <Button variant="ghost" size="sm">Sign In</Button>
             </Link>
             <Link href="/register">
-              <Button size="sm">注册</Button>
+              <Button size="sm">Get Started</Button>
             </Link>
           </div>
         </div>
       </header>
 
-      {/* 主内容区 */}
+      {/* Main content area */}
       <main className="flex-1">
         {children}
       </main>
 
-      {/* 页脚 */}
-      <footer className="border-t py-12 text-sm">
+      {/* Footer */}
+      <footer className="border-t py-12 text-sm bg-muted/30">
         <div className="container grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">关于我们</h3>
+            <h3 className="text-lg font-medium">Product</h3>
             <ul className="grid gap-2">
-              <li><Link href="/about" className="opacity-70 hover:opacity-100">公司介绍</Link></li>
-              <li><Link href="/team" className="opacity-70 hover:opacity-100">团队成员</Link></li>
-              <li><Link href="/careers" className="opacity-70 hover:opacity-100">加入我们</Link></li>
+              <li><Link href="/features" className="opacity-70 hover:opacity-100">Features</Link></li>
+              <li><Link href="/pricing" className="opacity-70 hover:opacity-100">Pricing</Link></li>
+              <li><Link href="/console" className="opacity-70 hover:opacity-100">Demo</Link></li>
             </ul>
           </div>
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">产品服务</h3>
+            <h3 className="text-lg font-medium">Resources</h3>
             <ul className="grid gap-2">
-              <li><Link href="/products" className="opacity-70 hover:opacity-100">产品列表</Link></li>
-              <li><Link href="/solutions" className="opacity-70 hover:opacity-100">解决方案</Link></li>
-              <li><Link href="/pricing" className="opacity-70 hover:opacity-100">价格方案</Link></li>
+              <li><Link href="/docs" className="opacity-70 hover:opacity-100">Documentation</Link></li>
+              <li><Link href="/examples" className="opacity-70 hover:opacity-100">Examples</Link></li>
+              <li><Link href="/blog" className="opacity-70 hover:opacity-100">Blog</Link></li>
             </ul>
           </div>
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">帮助支持</h3>
+            <h3 className="text-lg font-medium">Support</h3>
             <ul className="grid gap-2">
-              <li><Link href="/docs" className="opacity-70 hover:opacity-100">文档中心</Link></li>
-              <li><Link href="/faq" className="opacity-70 hover:opacity-100">常见问题</Link></li>
-              <li><Link href="/contact" className="opacity-70 hover:opacity-100">联系我们</Link></li>
+              <li><Link href="/help" className="opacity-70 hover:opacity-100">Help Center</Link></li>
+              <li><Link href="/community" className="opacity-70 hover:opacity-100">Community</Link></li>
+              <li><Link href="/contact" className="opacity-70 hover:opacity-100">Contact</Link></li>
             </ul>
           </div>
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">联系方式</h3>
+            <h3 className="text-lg font-medium">Company</h3>
             <ul className="grid gap-2">
-              <li className="opacity-70">地址：北京市朝阳区</li>
-              <li className="opacity-70">电话：010-12345678</li>
-              <li className="opacity-70">邮箱：contact@example.com</li>
+              <li><Link href="/about" className="opacity-70 hover:opacity-100">About Us</Link></li>
+              <li><Link href="/careers" className="opacity-70 hover:opacity-100">Careers</Link></li>
+              <li><Link href="/press" className="opacity-70 hover:opacity-100">Press Kit</Link></li>
             </ul>
           </div>
         </div>
         <div className="container mt-8 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row">
-          <p className="text-center text-sm opacity-70">&copy; {new Date().getFullYear()} Company. 保留所有权利。</p>
+          <p className="text-center text-sm opacity-70">
+            &copy; {new Date().getFullYear()} Llamacto. All rights reserved.
+          </p>
           <div className="flex gap-4">
-            <Link href="/privacy" className="text-sm opacity-70 hover:opacity-100">隐私政策</Link>
-            <Link href="/terms" className="text-sm opacity-70 hover:opacity-100">服务条款</Link>
+            <Link href="/privacy" className="text-sm opacity-70 hover:opacity-100">Privacy Policy</Link>
+            <Link href="/terms" className="text-sm opacity-70 hover:opacity-100">Terms of Service</Link>
           </div>
         </div>
       </footer>

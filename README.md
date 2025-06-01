@@ -1,80 +1,189 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Llamacto Web Scaffold
 
-## Getting Started
+A modern, production-ready web application scaffold built with the latest technologies. Llamacto provides everything you need to build scalable, maintainable, and performant web applications.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- 🎯 **Modern Stack**: Built with Next.js 15, TypeScript, and Tailwind CSS
+- 🔐 **Authentication**: Complete auth system with login, registration, and protected routes
+- 📊 **Admin Dashboard**: Beautiful admin interface with analytics and data visualization
+- 🎨 **UI Components**: Extensive component library with Radix UI and custom designs
+- 🌙 **Theme System**: Dark/light mode with automatic system detection
+- 📱 **Responsive Design**: Mobile-first approach with responsive layouts
+- 🔍 **TypeScript**: Full type safety and excellent developer experience
+- 🎭 **State Management**: Modern state management with Zustand
+- 🚦 **Validation**: Form validation with Zod schemas
+- 📈 **Performance**: Optimized for speed with Next.js App Router
+- 🧪 **Testing Ready**: Pre-configured for testing frameworks
+- 📦 **Production Ready**: Deployment-ready configuration
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: Radix UI
+- **State Management**: Zustand
+- **Forms**: React Hook Form + Zod validation
+- **Icons**: Lucide React
+- **Theme**: next-themes
+- **Data Fetching**: TanStack Query
+- **Package Manager**: pnpm
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+ 
+- pnpm (recommended) or npm
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/llamacto-web.git
+   cd llamacto-web
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env.local
+   # Edit .env.local with your configuration
+   ```
+
+4. **Run the development server**
+   ```bash
+   pnpm dev
+   ```
+
+5. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 📁 Project Structure
+
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── (auth)/            # Authentication pages
+│   ├── (site)/            # Public pages
+│   └── console/           # Admin dashboard
+├── components/            # Reusable components
+│   └── ui/               # UI component library
+├── hooks/                # Custom React hooks
+├── lib/                  # Utility functions
+├── providers/            # React context providers
+├── store/                # Zustand stores
+└── utils/                # Helper utilities
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎨 UI Components
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Llamacto includes a comprehensive UI component library built with:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Radix UI**: Unstyled, accessible components
+- **Tailwind CSS**: Utility-first styling
+- **Custom Components**: Button, Card, Input, Modal, etc.
+- **Form Components**: Input, Select, Checkbox, Radio, etc.
+- **Data Display**: Table, Badge, Avatar, etc.
+- **Navigation**: Navbar, Sidebar, Breadcrumb, etc.
 
-## Learn More
+## 🔐 Authentication
 
-To learn more about Next.js, take a look at the following resources:
+Pre-built authentication system includes:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Login/Register**: Email and password authentication
+- **Protected Routes**: Route-level protection
+- **User Management**: User profiles and settings
+- **Password Reset**: Secure password recovery
+- **Session Management**: JWT-based sessions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📊 Admin Dashboard
 
-## Deploy on Vercel
+Full-featured admin interface with:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Analytics Dashboard**: Charts and metrics
+- **User Management**: CRUD operations for users
+- **Settings Panel**: Application configuration
+- **Data Tables**: Sortable, filterable tables
+- **Responsive Design**: Mobile-friendly admin interface
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🚀 Deployment
 
-## 项目开发规范
+### Vercel (Recommended)
 
-### 1. 目录结构
-- `src/app`：页面与 API 路由
-- `src/components`：通用 UI 组件
-- `src/modules`：业务模块（如 orders）
-- `src/lib`：工具库（如 request、error-tracking）
-- `src/store`：全局状态管理
-- `src/utils`：通用工具函数
-- `src/constants`：常量配置
-- `src/hooks`：自定义 hooks
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Deploy with zero configuration
 
-### 2. 代码风格
-- 统一使用 Prettier 自动格式化，遵循 ESLint 规范
-- 变量、函数、类型命名采用小驼峰（camelCase），类名采用大驼峰（PascalCase）
-- 文件命名统一使用小写+中划线（kebab-case）
+### Docker
 
-### 3. 接口请求与 Service 层
-- 所有 HTTP 请求统一通过 `src/lib/request.ts`，禁止直接使用 axios
-- 支持多 baseURL，业务 service 层需封装 API 域
-- Service 层返回严格类型，禁止 any
-- 错误处理、鉴权逻辑统一在 request 拦截器中实现
+```bash
+# Build the Docker image
+docker build -t llamacto-web .
 
-### 4. 类型安全
-- 禁止使用 any，必须使用 TypeScript 类型定义
-- 公共类型定义放在 `src/types` 或各模块下的 types.ts
+# Run the container
+docker run -p 3000:3000 llamacto-web
+```
 
-### 5. 分支管理
-- 主分支：main/master
-- 日常开发：feature/xxx、bugfix/xxx、hotfix/xxx
-- 合并需走 Pull Request，需至少 1 人 Code Review
+### Other Platforms
 
-### 6. 提交规范
-- 使用英文提交，格式：`<type>: <desc>`，如 `feat: add user login api`
-- type 可选：feat、fix、refactor、docs、test、chore
+Llamacto can be deployed to any platform that supports Node.js:
 
-### 7. 测试
-- 业务代码需配套单元测试，测试文件与实现同目录，命名为 `xxx.test.ts(x)`
-- 所有接口需自测，推荐使用 httpie/curl 真实请求
+- Netlify
+- Railway
+- Heroku
+- AWS
+- Google Cloud
+- Azure
 
-### 8. 其他
-- 严禁在生产代码中留有 console.log、debugger
-- 重要变更需在 PR/Issue 说明影响范围
+## 🧪 Scripts
+
+```bash
+# Development
+pnpm dev          # Start development server
+pnpm build        # Build for production
+pnpm start        # Start production server
+
+# Code Quality
+pnpm lint         # Run ESLint
+pnpm lint:fix     # Fix ESLint errors
+pnpm type-check   # Run TypeScript checks
+pnpm format       # Format code with Prettier
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [Next.js](https://nextjs.org/) - The React framework for production
+- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework
+- [Radix UI](https://www.radix-ui.com/) - Low-level UI primitives
+- [Vercel](https://vercel.com/) - Platform for frontend frameworks
+
+## 📞 Support
+
+- 📧 Email: support@llamacto.com
+- 💬 Discord: [Join our community](https://discord.gg/llamacto)
+- 📚 Documentation: [docs.llamacto.com](https://docs.llamacto.com)
+- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/llamacto-web/issues)
+
+---
+
+Made with ❤️ by the Llamacto Team

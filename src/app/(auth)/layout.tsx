@@ -9,7 +9,7 @@ export default function AuthLayout({ children }: PropsWithChildren) {
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm md:max-w-3xl">
         {/* Logo or brand here */}
-        <div className="mb-8 flex justify-center">
+        <div className="mb-8 flex flex-col items-center space-y-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -18,10 +18,13 @@ export default function AuthLayout({ children }: PropsWithChildren) {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="h-10 w-10"
+            className="h-10 w-10 text-primary"
           >
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
           </svg>
+          <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Llamacto
+          </span>
         </div>
         
         {/* Auth content (login, register, etc.) */}
@@ -30,7 +33,7 @@ export default function AuthLayout({ children }: PropsWithChildren) {
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-muted-foreground">
           <div>
-            &copy; {new Date().getFullYear()} Your Company. All rights reserved.
+            &copy; {new Date().getFullYear()} Llamacto. All rights reserved.
           </div>
         </div>
       </div>

@@ -33,7 +33,7 @@ export class ApiError extends Error {
   }
 }
 
-// 拦截器注册函数
+// Interceptor setup function
 function setupInterceptors(instance: AxiosInstance) {
   // Request interceptor
   instance.interceptors.request.use(
@@ -88,7 +88,7 @@ function setupInterceptors(instance: AxiosInstance) {
   );
 }
 
-// 创建 axios 实例工厂
+// Create axios instance factory
 function createAxiosInstance(baseURL?: string): AxiosInstance {
   const inst = axios.create({
     baseURL: baseURL || API_URL,
@@ -101,10 +101,10 @@ function createAxiosInstance(baseURL?: string): AxiosInstance {
   return inst;
 }
 
-// 默认实例
+// Default instance
 const defaultInstance = createAxiosInstance();
 
-// Request method wrapper，支持 baseURL 参数
+// Request method wrapper, supports baseURL parameter
 export const request = {
   get: <T = unknown>(url: string, config?: RequestConfig) => {
     const inst = config?.baseURL ? createAxiosInstance(config.baseURL) : defaultInstance;

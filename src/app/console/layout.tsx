@@ -82,8 +82,21 @@ export default function ConsoleLayout({
           href={ROUTES.CONSOLE.HOME}
           className="flex items-center gap-2 font-semibold"
         >
-          <Package className="h-6 w-6" />
-          <span>Enterprise Console</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-6 w-6 text-primary"
+          >
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+          </svg>
+          <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Llamacto Console
+          </span>
         </Link>
         <div className="ml-auto flex items-center gap-4">
           <ThemeToggle />
