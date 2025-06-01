@@ -63,7 +63,7 @@ export function isValidUrl(url: string): boolean {
   try {
     new URL(url);
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 }
@@ -123,15 +123,15 @@ export function isValidPhoneNumber(phoneNumber: string, countryCode = 'US'): boo
  * Checks if a value is a number
  * @param value - Value to check
  */
-export function isNumber(value: any): boolean {
-  return !isNaN(parseFloat(value)) && isFinite(value);
+export function isNumber(value: unknown): boolean {
+  return !isNaN(parseFloat(value as string)) && isFinite(value as number);
 }
 
 /**
  * Checks if a value is empty (null, undefined, empty string, empty array, or empty object)
  * @param value - Value to check
  */
-export function isEmpty(value: any): boolean {
+export function isEmpty(value: unknown): boolean {
   if (value === null || value === undefined) {
     return true;
   }

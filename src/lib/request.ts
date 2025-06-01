@@ -3,7 +3,6 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, In
 // Environment configuration
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 const API_TIMEOUT = Number(process.env.NEXT_PUBLIC_API_TIMEOUT || 10000);
-const API_VERSION = process.env.NEXT_PUBLIC_API_VERSION || 'v1';
 
 // Request configuration type
 export interface RequestConfig extends AxiosRequestConfig {
@@ -14,7 +13,7 @@ export interface RequestConfig extends AxiosRequestConfig {
 }
 
 // Response data type
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   code: number;
   data: T;
   message: string;
@@ -24,9 +23,9 @@ export interface ApiResponse<T = any> {
 // Error type
 export class ApiError extends Error {
   code: number;
-  data?: any;
+  data?: unknown;
   
-  constructor(message: string, code: number, data?: any) {
+  constructor(message: string, code: number, data?: unknown) {
     super(message);
     this.name = 'ApiError';
     this.code = code;

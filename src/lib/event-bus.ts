@@ -3,10 +3,10 @@
  * 提供发布-订阅模式，解耦模块间依赖
  */
 
-type EventHandler<T = any> = (data: T) => void;
+type EventHandler<T = unknown> = (data: T) => void;
 
 class EventBus {
-  private events: Record<string, EventHandler[]> = {};
+  private events: Record<string, EventHandler<unknown>[]> = {};
 
   /**
    * 订阅事件
@@ -18,7 +18,7 @@ class EventBus {
     if (!this.events[event]) {
       this.events[event] = [];
     }
-    this.events[event].push(handler);
+    this.events[event].push(handler as EventHandler<unknown>);
     
     // 返回取消订阅函数
     return () => this.unsubscribe(event, handler);
@@ -29,9 +29,9 @@ class EventBus {
    * @param event 事件名称
    * @param handler 事件处理函数
    */
-  unsubscribe(event: string, handler: EventHandler) {
+  unsubscribe<T>(event: string, handler: EventHandler<T>) {
     if (!this.events[event]) return;
-    this.events[event] = this.events[event].filter(h => h !== handler);
+    this.events[event] = this.events[event].filter(h => h !== (handler as EventHandler<unknown>));
   }
 
   /**

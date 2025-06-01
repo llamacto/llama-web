@@ -17,7 +17,7 @@ import { eventBus } from '@/lib/event-bus';
  *   // Update component state or trigger side effects
  * });
  */
-export function useEventBus<T = any>(
+export function useEventBus<T = unknown>(
   event: string,
   handler: (data: T) => void
 ) {

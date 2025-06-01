@@ -33,18 +33,18 @@ export function deepClone<T>(obj: T): T {
  * @param defaultValue - Default value if path doesn't exist
  */
 export function getNestedValue<T, D = undefined>(
-  obj: Record<string, any>,
+  obj: Record<string, unknown>,
   path: string,
   defaultValue?: D
 ): T | D {
   const keys = path.split('.');
-  let result = obj;
+  let result: unknown = obj;
   
   for (const key of keys) {
     if (result === undefined || result === null) {
       return defaultValue as D;
     }
-    result = result[key];
+    result = (result as Record<string, unknown>)[key];
   }
   
   return (result === undefined) ? (defaultValue as D) : (result as T);
@@ -87,7 +87,7 @@ export function omit<T extends object, K extends keyof T>(
  * Checks if an object is empty
  * @param obj - Object to check
  */
-export function isEmpty(obj: object): boolean {
+export function isEmptyObject(obj: object): boolean {
   return Object.keys(obj).length === 0;
 }
 
@@ -108,10 +108,11 @@ export function deepMerge<T extends object, S extends object>(
         if (!(key in target)) {
           Object.assign(output, { [key]: source[key as keyof S] });
         } else {
-          output[key as keyof (T & S)] = deepMerge(
+          const merged = deepMerge(
             target[key as keyof T] as object,
             source[key as keyof S] as object
-          ) as any;
+          );
+          (output as Record<string, unknown>)[key] = merged;
         }
       } else {
         Object.assign(output, { [key]: source[key as keyof S] });
@@ -125,6 +126,6 @@ export function deepMerge<T extends object, S extends object>(
 /**
  * Helper: Checks if value is an object
  */
-function isObject(item: any): item is object {
+function isObject(item: unknown): item is object {
   return item !== null && typeof item === 'object' && !Array.isArray(item);
 }

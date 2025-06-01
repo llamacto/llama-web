@@ -8,7 +8,7 @@ interface ErrorMetadata {
   url?: string;
   componentStack?: string;
   tags?: Record<string, string>;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 type ErrorHandler = (error: Error, metadata?: ErrorMetadata) => void;
@@ -130,7 +130,7 @@ export const errorTracking = ErrorTrackingService.getInstance();
 // Example integration with an external service
 export function setupErrorTracking(
   userId?: string, 
-  customMetadata?: Record<string, any>
+  customMetadata?: Record<string, unknown>
 ): void {
   // Initialize with default metadata
   errorTracking.init({

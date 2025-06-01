@@ -75,7 +75,7 @@ const DEFAULT_FILTERS: OrderFilters = {
 /**
  * Order store implementation
  */
-const useOrderStoreBase = create<OrderState>()((set, get) => ({
+const useOrderStoreBase = create<OrderState>()(set => ({
   // Initial state
   selectedOrderId: null,
   filters: { ...DEFAULT_FILTERS },

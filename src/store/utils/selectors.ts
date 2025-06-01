@@ -36,7 +36,7 @@ export function createSelectors<S extends UseBoundStore<StoreApi<object>>>(
   
   // For each key in the store, create a selector
   for (const key of keys) {
-    // @ts-ignore - We know that the key exists in the store
+    // @ts-expect-error - We know that the key exists in the store
     store.use[key] = () => store((state) => state[key]);
   }
 
