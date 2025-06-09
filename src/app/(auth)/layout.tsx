@@ -1,4 +1,5 @@
 import { PropsWithChildren } from 'react';
+import { Icons } from '@/components/ui/icons';
 
 /**
  * Shared layout for all authentication related pages
@@ -7,24 +8,18 @@ import { PropsWithChildren } from 'react';
 export default function AuthLayout({ children }: PropsWithChildren) {
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm md:max-w-3xl">
-        {/* Logo or brand here */}
-        <div className="mb-8 flex flex-col items-center space-y-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-10 w-10 text-primary"
-          >
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
-          </svg>
-          <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Llamacto
-          </span>
+      <div className="w-full max-w-sm md:max-w-md">
+        {/* Logo and brand */}
+        <div className="mb-8 flex flex-col items-center space-y-4">
+          <div className="flex items-center space-x-3">
+            <Icons.ZGI className="h-10 w-10 text-primary" />
+            <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              ZGI
+            </span>
+          </div>
+          <p className="text-center text-sm text-muted-foreground max-w-sm">
+            Powerful AI-driven platform for intelligent automation and insights
+          </p>
         </div>
         
         {/* Auth content (login, register, etc.) */}
@@ -33,7 +28,7 @@ export default function AuthLayout({ children }: PropsWithChildren) {
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-muted-foreground">
           <div>
-            &copy; {new Date().getFullYear()} Llamacto. All rights reserved.
+            &copy; {new Date().getFullYear()} ZGI. All rights reserved.
           </div>
         </div>
       </div>
