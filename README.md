@@ -17,9 +17,19 @@ A modern, production-ready web application scaffold built with the latest techno
 - 🧪 **Testing Ready**: Pre-configured for testing frameworks
 - 📦 **Production Ready**: Deployment-ready configuration
 
+## 🆕 最新更新 (v2.0.0)
+
+- ✅ **Next.js 16.0.3** - 最新稳定版
+- ✅ **React 19.2.0** - 最新特性支持
+- ✅ **Tailwind CSS 4.1.17** - 全新版本
+- ✅ **性能优化** - 生产环境配置优化
+- ✅ **架构文档** - 完整的优化指南
+
+👉 查看 [优化总结报告](docs/OPTIMIZATION_SUMMARY.md) 了解详情
+
 ## 🛠️ Tech Stack
 
-- **Framework**: Next.js 15 with App Router
+- **Framework**: Next.js 16 with App Router
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
 - **UI Components**: Radix UI
