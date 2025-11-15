@@ -6,7 +6,7 @@ import {
   IconShare3,
   IconTrash,
   type Icon,
-} from "@tabler/icons-react"
+} from "@/components/ui/tabler-icons"
 
 import {
   DropdownMenu,

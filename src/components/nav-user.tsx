@@ -6,7 +6,7 @@ import {
   IconLogout,
   IconNotification,
   IconUserCircle,
-} from "@tabler/icons-react"
+} from "@/components/ui/tabler-icons"
 
 import {
   Avatar,

@@ -21,6 +21,7 @@ import {
 } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import {
+  IconCheck,
   IconChevronDown,
   IconChevronLeft,
   IconChevronRight,
@@ -33,7 +34,7 @@ import {
   IconLoader,
   IconPlus,
   IconTrendingUp,
-} from "@tabler/icons-react"
+} from "@/components/ui/tabler-icons"
 import {
   ColumnDef,
   ColumnFiltersState,
