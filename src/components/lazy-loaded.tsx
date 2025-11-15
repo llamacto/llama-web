@@ -16,7 +16,7 @@ const LoadingFallback = () => (
 // Lazy load heavy data table component
 // Reduces initial bundle size by ~200KB
 export const LazyDataTable = dynamic(
-  () => import('@/components/data-table').then((mod) => ({ default: mod.DataTable })),
+  () => import('@/components/features/tables').then((mod) => ({ default: mod.DataTable })),
   {
     loading: () => <LoadingFallback />,
     ssr: false, // Data tables often have client-side interactions
@@ -26,7 +26,7 @@ export const LazyDataTable = dynamic(
 // Lazy load chart component
 // Charts are usually heavy and client-side only
 export const LazyChartAreaInteractive = dynamic(
-  () => import('@/components/chart-area-interactive').then((mod) => ({ default: mod.ChartAreaInteractive })),
+  () => import('@/components/features/charts').then((mod) => ({ default: mod.ChartAreaInteractive })),
   {
     loading: () => <LoadingFallback />,
     ssr: false,
