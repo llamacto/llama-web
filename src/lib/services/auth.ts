@@ -1,4 +1,4 @@
-// Authentication service layer for ZGI platform
+// Authentication service layer
 // Implements clean architecture with proper error handling and type safety
 
 import { request } from '@/lib/request';
@@ -47,7 +47,7 @@ const API_ENDPOINTS = {
 } as const;
 
 // Base URL from environment
-const ZGI_API_BASE = process.env.NEXT_PUBLIC_ZGI_API_BASE || 'https://zgi-api.emkok.com';
+const ZGI_API_BASE = process.env.NEXT_PUBLIC_ZGI_API_BASE || '';
 
 /**
  * Authentication service class

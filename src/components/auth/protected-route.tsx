@@ -27,8 +27,8 @@ export function ProtectedRoute({
   const user = useAuthStore.use.user();
   const isSystemReady = useAuthStore.use.isSystemReady();
   
-  // Check admin requirements
-  const isAdmin = user ? authSelectors.isAdmin({ user }) : false;
+  // Check admin requirements - pass full state to selector
+  const isAdmin = user ? authSelectors.isAdmin(useAuthStore.getState()) : false;
   
   useEffect(() => {
     // Wait for system to be ready before making decisions

@@ -1,4 +1,4 @@
-// Authentication state management for ZGI platform
+// Authentication state management
 // Optimized with Zustand and React Query for performance
 
 import { create } from 'zustand';
@@ -25,7 +25,7 @@ interface AuthState {
   setUser: (user: User | null) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
-  setSystemFeatures: (features: SystemFeatures) => void;
+  setSystemFeatures: (features: SystemFeatures | null) => void;
   setSetupStatus: (status: SetupStatus) => void;
   
   // Complex actions
@@ -206,7 +206,7 @@ const useAuthStoreBase = create<AuthState>()(
       reset: () => set(defaultState),
     }),
     {
-      name: 'zgi-auth-storage',
+      name: 'auth-storage',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         user: state.user,

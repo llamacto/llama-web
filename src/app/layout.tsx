@@ -9,8 +9,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ZGI - AI-Powered Platform",
-  description: "Powerful AI-driven platform for intelligent automation and insights",
+  title: "Llamacto Web Scaffold",
+  description: "Modern web application scaffold built with Next.js, TypeScript, and Tailwind CSS",
 };
 
 export default function RootLayout({

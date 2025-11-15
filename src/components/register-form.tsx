@@ -64,9 +64,9 @@ export function RegisterForm({ className }: RegisterFormProps) {
   const error = useAuthStore.use.error();
   const systemFeatures = useAuthStore.use.systemFeatures();
   
-  // Derived state
-  const canRegister = systemFeatures ? authSelectors.canRegister({ systemFeatures }) : false;
-  const hasSocialLogin = systemFeatures ? authSelectors.hasSocialLogin({ systemFeatures }) : false;
+  // Derived state - pass full state to selectors
+  const canRegister = systemFeatures ? authSelectors.canRegister(useAuthStore.getState()) : false;
+  const hasSocialLogin = systemFeatures ? authSelectors.hasSocialLogin(useAuthStore.getState()) : false;
   
   // Form setup
   const {
