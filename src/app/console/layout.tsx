@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LucideIcon, BarChart3, Settings, Home, Users, ShoppingCart, Package, ListFilter, Trash2, Bell, LogOut } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils";
 import { ROUTES } from "@/constants/routes";
 import {
   DropdownMenu,

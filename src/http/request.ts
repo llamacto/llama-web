@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import type { ApiResponse as BaseApiResponse } from './types';
 
 // Environment configuration
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
@@ -10,15 +11,6 @@ export interface RequestConfig extends AxiosRequestConfig {
   skipAuth?: boolean; // Skip authentication
   skipErrorHandler?: boolean; // Skip error handling
   baseURL?: string; // Optional custom baseURL
-}
-
-// Response data type for ZGI API
-export interface ApiResponse<T = unknown> {
-  code?: number;
-  data?: T;
-  message?: string;
-  success?: boolean;
-  result?: string;
 }
 
 // Error type
@@ -211,6 +203,9 @@ export const requestUtils = {
   clearAuthToken,
   createInstance: createAxiosInstance,
 };
+
+// Re-export types for convenience
+export type ApiResponse = BaseApiResponse;
 
 export default request;
 

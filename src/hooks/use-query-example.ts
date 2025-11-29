@@ -1,9 +1,9 @@
 'use client';
 
 import { useQuery, useMutation } from '@tanstack/react-query';
-import request from '@/lib/request';
-import { queryClient } from '@/lib/query-client';
-import { eventBus } from '@/lib/event-bus';
+import request from '@/http';
+import { queryClient } from '@/config';
+import { eventBus } from '@/utils';
 
 // 示例类型定义
 export interface User {
@@ -80,17 +80,17 @@ export function useUpdateUser() {
   return useMutation({
     mutationFn: ({ id, ...data }: User) => 
       request.put<User>(`/users/${id}`, data),
-    onSuccess: (data) => {
+    onSuccess: (updatedUser) => {
       // 使特定用户查询和用户列表查询同时失效
       queryClient.invalidateQueries({ 
-        queryKey: ['users', data.id] 
+        queryKey: ['users', updatedUser.id] 
       });
       queryClient.invalidateQueries({ 
         queryKey: ['users'],
         exact: true 
       });
       // 发布事件通知
-      eventBus.publish('user:updated', data);
+      eventBus.publish('user:updated', updatedUser);
     },
   });
 }

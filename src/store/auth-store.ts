@@ -4,8 +4,8 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { createSelectors } from './utils/selectors';
-import { authService } from '@/lib/services/auth';
-import type { User, SystemFeatures, SetupStatus } from '@/lib/types/auth';
+import { authService } from '@/services/auth';
+import type { User, SystemFeatures, SetupStatus } from '@/types/auth';
 
 interface AuthState {
   // Core auth state

@@ -1,7 +1,7 @@
 // Authentication service layer
 // Implements clean architecture with proper error handling and type safety
 
-import { request } from '@/lib/request';
+import { request, ApiError } from '@/http';
 import type {
   User,
   LoginRequest,
@@ -11,8 +11,7 @@ import type {
   SystemFeatures,
   SetupStatus,
   UserList,
-  ApiError,
-} from '@/lib/types/auth';
+} from '@/types/auth';
 
 // Login response with token data
 interface LoginResponse {

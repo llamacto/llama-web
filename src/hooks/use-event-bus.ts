@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { eventBus } from '@/lib/event-bus';
+import { eventBus } from '@/utils';
 
 /**
  * React hook for subscribing to EventBus events

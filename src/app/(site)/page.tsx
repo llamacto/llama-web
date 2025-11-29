@@ -4,8 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 
 /**
- * Llamacto Web Scaffold Homepage
- * Showcasing the features and capabilities of the web scaffold
+ * LlamaFront AI Scaffold Homepage
+ * Showcasing the features and capabilities of the AI-powered frontend scaffold
  */
 export default function HomePage() {
   return (
@@ -19,14 +19,14 @@ export default function HomePage() {
           
           <h1 className="max-w-4xl text-4xl font-bold tracking-tight md:text-6xl lg:text-7xl">
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Llamacto
+              LlamaFront
             </span>{" "}
-            Web Scaffold
+            AI Scaffold
           </h1>
           
           <p className="mt-6 max-w-3xl text-lg text-muted-foreground md:text-xl lg:text-2xl">
-            The most powerful and modern web application scaffold. Built with Next.js 15, 
-            TypeScript, Tailwind CSS, and cutting-edge technologies to accelerate your development.
+            The most powerful AI-powered frontend scaffold. Built for the AI era with vibe coding, 
+            Next.js 16, TypeScript, Tailwind CSS, and cutting-edge frontend technologies.
           </p>
           
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
@@ -35,7 +35,7 @@ export default function HomePage() {
                 Get Started Free
               </Button>
             </Link>
-            <Link href="https://github.com/aihut/zhibei-web" target="_blank">
+            <Link href="https://github.com/llamacto/llamafront-ai-scaffold" target="_blank">
               <Button variant="outline" size="lg" className="h-12 px-8 text-base">
                 <svg className="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 0C5.374 0 0 5.373 0 12 0 17.302 3.438 21.8 8.207 23.387c.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
@@ -48,15 +48,15 @@ export default function HomePage() {
           <div className="mt-12 flex items-center justify-center gap-8 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <div className="h-2 w-2 rounded-full bg-green-500"></div>
-              <span>Production Ready</span>
+              <span>Frontend-First</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="h-2 w-2 rounded-full bg-blue-500"></div>
-              <span>TypeScript</span>
+              <span>AI-Ready</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="h-2 w-2 rounded-full bg-purple-500"></div>
-              <span>Modern Stack</span>
+              <span>TypeScript</span>
             </div>
           </div>
         </div>
@@ -67,11 +67,11 @@ export default function HomePage() {
         <div className="container">
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-              Built with Modern Technologies
+              Built for AI-First Development
             </h2>
             <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
-              Llamacto Web Scaffold leverages the latest and greatest technologies 
-              to ensure your application is fast, scalable, and maintainable.
+              LlamaCode AI Scaffold leverages cutting-edge technologies optimized for AI-assisted development
+              to ensure your application is intelligent, scalable, and maintainable.
             </p>
           </div>
 
@@ -96,11 +96,11 @@ export default function HomePage() {
         <div className="container">
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-              Everything You Need to Build Modern Web Apps
+              Everything You Need for AI-Powered Development
             </h2>
             <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
-              From authentication to analytics, Llamacto provides all the essential features 
-              and components you need to build production-ready applications.
+              From authentication to AI integration, LlamaCode provides all the essential features 
+              and components you need to build intelligent, production-ready applications.
             </p>
           </div>
 
@@ -149,7 +149,7 @@ export default function HomePage() {
             Ready to Build Something Amazing?
           </h2>
           <p className="mt-4 max-w-2xl text-blue-100 md:text-lg">
-            Join thousands of developers who trust Llamacto Web Scaffold 
+            Join thousands of AI developers who trust LlamaCode AI Scaffold 
             to build their next breakthrough application.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
