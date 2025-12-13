@@ -1,5 +1,5 @@
-// Authentication and user account types for ZGI platform
-// Based on Dify API documentation
+// Authentication and user account types.
+// Based on upstream API documentation.
 
 export interface User {
   id: string;

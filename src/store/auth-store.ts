@@ -7,6 +7,21 @@ import { createSelectors } from './utils/selectors';
 import { authService } from '@/services/auth';
 import type { User, SystemFeatures, SetupStatus } from '@/types/auth';
 
+function getErrorMessage(err: unknown, fallback: string): string {
+  if (err instanceof Error) return err.message || fallback;
+  if (typeof err === 'string') return err || fallback;
+  return fallback;
+}
+
+function getErrorStatus(err: unknown): number | undefined {
+  if (!err || typeof err !== 'object') return undefined;
+  const maybe = err as { status?: unknown; code?: unknown };
+
+  if (typeof maybe.status === 'number') return maybe.status;
+  if (typeof maybe.code === 'number') return maybe.code;
+  return undefined;
+}
+
 interface AuthState {
   // Core auth state
   user: User | null;
@@ -29,7 +44,7 @@ interface AuthState {
   setSetupStatus: (status: SetupStatus) => void;
   
   // Complex actions
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, remember?: boolean) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
@@ -77,25 +92,21 @@ const useAuthStoreBase = create<AuthState>()(
       setSetupStatus: (setupStatus) => set({ setupStatus }),
       
       // Complex auth actions
-      login: async (email, password) => {
+      login: async (email, password, remember) => {
         set({ isLoading: true, error: null });
         
         try {
-          const response = await authService.login({ email, password });
-          
-          // Store tokens
-          authService.setRefreshToken(response.tokens.refresh_token);
-          authService.setUserProfile(response.user);
-          
+          const user = await authService.login({ email, password, remember });
+
           set({ 
-            user: response.user,
+            user,
             isAuthenticated: true,
             isLoading: false,
             error: null 
           });
-        } catch (error: any) {
+        } catch (error: unknown) {
           set({ 
-            error: error.message || 'Login failed',
+            error: getErrorMessage(error, 'Login failed'),
             isLoading: false,
             isAuthenticated: false,
             user: null 
@@ -114,9 +125,9 @@ const useAuthStoreBase = create<AuthState>()(
             // After successful registration, auto-login
             await get().login(email, password);
           }
-        } catch (error: any) {
+        } catch (error: unknown) {
           set({ 
-            error: error.message || 'Registration failed',
+            error: getErrorMessage(error, 'Registration failed'),
             isLoading: false 
           });
           throw error;
@@ -147,16 +158,15 @@ const useAuthStoreBase = create<AuthState>()(
         
         try {
           const user = await authService.getProfileEx();
-          authService.setUserProfile(user);
           set({ user, isLoading: false });
-        } catch (error: any) {
+        } catch (error: unknown) {
           set({ 
-            error: error.message || 'Failed to refresh profile',
+            error: getErrorMessage(error, 'Failed to refresh profile'),
             isLoading: false 
           });
           
           // If profile fetch fails due to auth, logout
-          if (error.code === 401 || error.status === 401) {
+          if (getErrorStatus(error) === 401) {
             get().logout();
           }
         }
@@ -177,22 +187,15 @@ const useAuthStoreBase = create<AuthState>()(
             setupStatus,
             isSystemReady: true 
           });
-          
-          // Check if user is authenticated
-          if (authService.isAuthenticated()) {
-            // Try to load cached user first for better UX
-            const cachedUser = authService.getUserProfile();
-            if (cachedUser) {
-              set({ 
-                user: cachedUser,
-                isAuthenticated: true 
-              });
-            }
-            
-            // Then refresh from server
-            await get().refreshProfile();
+
+          // Probe session on startup. If cookies are present, /auth/me will succeed.
+          try {
+            const user = await authService.getProfileEx();
+            set({ user, isAuthenticated: true });
+          } catch {
+            set({ user: null, isAuthenticated: false });
           }
-        } catch (error: any) {
+        } catch (error: unknown) {
           console.error('Auth initialization failed:', error);
           set({ 
             error: 'System initialization failed',

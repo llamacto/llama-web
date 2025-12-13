@@ -5,7 +5,7 @@ import request from '@/http';
 import { queryClient } from '@/config';
 import { eventBus } from '@/utils';
 
-// 示例类型定义
+// Example types
 export interface User {
   id: string;
   name: string;
@@ -19,10 +19,10 @@ export interface Post {
   userId: string;
 }
 
-// =============== 查询示例 ===============
+// =============== Query examples ===============
 
 /**
- * 获取用户列表的 Hook
+ * Fetch users.
  */
 export function useUsers() {
   return useQuery({
@@ -32,56 +32,56 @@ export function useUsers() {
 }
 
 /**
- * 获取单个用户的 Hook
+ * Fetch a single user.
  */
 export function useUser(id: string) {
   return useQuery({
     queryKey: ['users', id],
     queryFn: () => request.get<User>(`/users/${id}`),
-    // 当 id 不存在时不执行查询
+    // Do not run the query if id is empty.
     enabled: !!id,
   });
 }
 
 /**
- * 获取用户帖子的 Hook
+ * Fetch posts for a user.
  */
 export function useUserPosts(userId: string) {
   return useQuery({
     queryKey: ['posts', { userId }],
     queryFn: () => request.get<Post[]>(`/posts?userId=${userId}`),
-    // 当 userId 不存在时不执行查询
+    // Do not run the query if userId is empty.
     enabled: !!userId,
   });
 }
 
-// =============== 变更示例 ===============
+// =============== Mutation examples ===============
 
 /**
- * 创建用户的 Hook
+ * Create a user.
  */
 export function useCreateUser() {
   return useMutation({
     mutationFn: (newUser: Omit<User, 'id'>) => 
       request.post<User>('/users', newUser),
     onSuccess: (data) => {
-      // 成功后使相关查询失效，触发重新获取
+      // Invalidate queries to refetch.
       queryClient.invalidateQueries({ queryKey: ['users'] });
-      // 发布事件通知
+      // Publish an event for decoupled listeners.
       eventBus.publish('user:created', data);
     },
   });
 }
 
 /**
- * 更新用户的 Hook
+ * Update a user.
  */
 export function useUpdateUser() {
   return useMutation({
     mutationFn: ({ id, ...data }: User) => 
       request.put<User>(`/users/${id}`, data),
     onSuccess: (updatedUser) => {
-      // 使特定用户查询和用户列表查询同时失效
+      // Invalidate both the list and the item query.
       queryClient.invalidateQueries({ 
         queryKey: ['users', updatedUser.id] 
       });
@@ -89,29 +89,29 @@ export function useUpdateUser() {
         queryKey: ['users'],
         exact: true 
       });
-      // 发布事件通知
+      // Publish an event for decoupled listeners.
       eventBus.publish('user:updated', updatedUser);
     },
   });
 }
 
 /**
- * 删除用户的 Hook
+ * Delete a user.
  */
 export function useDeleteUser() {
   return useMutation({
     mutationFn: (id: string) => 
       request.delete<void>(`/users/${id}`),
     onSuccess: (_, variables) => {
-      // 使用户相关查询失效
+      // Invalidate list queries.
       queryClient.invalidateQueries({ 
         queryKey: ['users'] 
       });
-      // 删除特定用户的缓存
+      // Remove the specific user cache entry.
       queryClient.removeQueries({ 
         queryKey: ['users', variables] 
       });
-      // 发布事件通知
+      // Publish an event for decoupled listeners.
       eventBus.publish('user:deleted', variables);
     },
   });

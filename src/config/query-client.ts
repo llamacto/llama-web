@@ -1,16 +1,16 @@
 import { QueryClient } from '@tanstack/react-query';
 
-// 创建 React Query 客户端
+// Create a React Query client.
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // 基本配置
-      refetchOnWindowFocus: false, // 窗口重新获得焦点时不自动重新获取
-      retry: 1, // 失败时重试一次
-      staleTime: 5 * 60 * 1000, // 数据在5分钟内被视为新鲜
+      // Baseline defaults.
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: 5 * 60 * 1000,
     },
     mutations: {
-      // 修改操作的基本配置
+      // Baseline defaults.
       retry: 1,
     },
   },

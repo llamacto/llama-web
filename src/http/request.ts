@@ -2,7 +2,12 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, In
 import type { ApiResponse as BaseApiResponse } from './types';
 
 // Environment configuration
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+// In the browser, a relative baseURL works best for same-origin Route Handlers.
+// On the server, axios requires an absolute URL, so allow overriding via INTERNAL_API_URL.
+const API_URL =
+  typeof window === 'undefined'
+    ? (process.env.INTERNAL_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api')
+    : (process.env.NEXT_PUBLIC_API_URL || '/api');
 const API_TIMEOUT = Number(process.env.NEXT_PUBLIC_API_TIMEOUT || 30000);
 
 // Request configuration type
@@ -28,35 +33,11 @@ export class ApiError extends Error {
   }
 }
 
-// Token management utilities
-const getAuthToken = (): string | null => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('auth_token');
-  }
-  return null;
-};
-
-const clearAuthToken = (): void => {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user_profile');
-  }
-};
-
 // Interceptor setup function
 function setupInterceptors(instance: AxiosInstance) {
   // Request interceptor
   instance.interceptors.request.use(
     (config: InternalAxiosRequestConfig & RequestConfig) => {
-      // Add authentication information
-      if (!config.skipAuth) {
-        const token = getAuthToken();
-        if (token) {
-          config.headers = config.headers || {};
-          config.headers['Authorization'] = `Bearer ${token}`;
-        }
-      }
-      
       // Add default content type
       if (!config.headers['Content-Type']) {
         config.headers['Content-Type'] = 'application/json';
@@ -73,35 +54,12 @@ function setupInterceptors(instance: AxiosInstance) {
   instance.interceptors.response.use(
     (response: AxiosResponse) => {
       const { data } = response;
-      
-      // Handle different response formats from ZGI API
-      
-      // Format 1: Direct data response (most endpoints)
-      if (data && typeof data === 'object' && !('code' in data) && !('result' in data)) {
-        return data;
+
+      // If the backend uses a common envelope like { data: ... }, unwrap it.
+      if (data && typeof data === 'object' && 'data' in data) {
+        return (data as { data: unknown }).data;
       }
-      
-      // Format 2: Success result format
-      if (data && data.result === 'success') {
-        return data;
-      }
-      
-      // Format 3: Standard API response with data field
-      if (data && data.data !== undefined) {
-        return data.data;
-      }
-      
-      // Format 4: Error response with code and message
-      if (data && data.code && data.code !== 200 && data.code !== 0) {
-        throw new ApiError(
-          data.message || 'Request failed', 
-          data.code, 
-          data, 
-          response.status
-        );
-      }
-      
-      // Default: return the data as-is
+
       return data;
     },
     (error: AxiosError) => {
@@ -114,23 +72,6 @@ function setupInterceptors(instance: AxiosInstance) {
       }
       
       const { status, data } = error.response as AxiosResponse;
-      
-      // Authentication related errors
-      if (status === 401) {
-        clearAuthToken();
-        
-        // Only redirect if we're in the browser and not already on auth pages
-        if (typeof window !== 'undefined') {
-          const currentPath = window.location.pathname;
-          const isAuthPage = ['/login', '/register', '/setup'].some(path => 
-            currentPath.startsWith(path)
-          );
-          
-          if (!isAuthPage) {
-            window.location.href = '/login';
-          }
-        }
-      }
       
       // Format error message based on response
       let message = 'Request failed';
@@ -199,8 +140,6 @@ export const request = {
 
 // Export utilities for external use
 export const requestUtils = {
-  getAuthToken,
-  clearAuthToken,
   createInstance: createAxiosInstance,
 };
 

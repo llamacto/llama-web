@@ -66,7 +66,7 @@ export function LoginForm({ className }: LoginFormProps) {
   // Form submission
   const onSubmit = async (data: LoginFormData) => {
     try {
-      await login(data.email, data.password);
+      await login(data.email, data.password, data.remember);
       router.push('/console'); // Redirect to dashboard after successful login
     } catch (err) {
       // Error is handled by the store
@@ -82,7 +82,7 @@ export function LoginForm({ className }: LoginFormProps) {
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
           <p className="text-muted-foreground">
-            Sign in to your ZGI account
+            Sign in to your account
           </p>
         </CardHeader>
         
@@ -247,7 +247,7 @@ export function LoginForm({ className }: LoginFormProps) {
           {/* Registration Link */}
           {canRegister && (
             <div className="text-center text-sm">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link
                 href="/register"
                 className="font-medium text-primary hover:underline"

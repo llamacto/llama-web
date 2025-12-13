@@ -134,7 +134,7 @@ export function RegisterForm({ className }: RegisterFormProps) {
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Create account</CardTitle>
           <p className="text-muted-foreground">
-            Get started with ZGI platform
+            Get started with the platform
           </p>
         </CardHeader>
         

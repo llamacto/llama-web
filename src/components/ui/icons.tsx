@@ -1,5 +1,5 @@
-// Icon components for ZGI platform
-// Using Lucide React icons for consistency
+// Icon components for the application.
+// Using Lucide React icons for consistency.
 
 import {
   AlertCircle,
@@ -82,8 +82,8 @@ export const Icons = {
     </svg>
   ),
 
-  // ZGI Logo
-  ZGI: (props: React.SVGProps<SVGSVGElement>) => (
+  // Brand logo
+  Logo: (props: React.SVGProps<SVGSVGElement>) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"

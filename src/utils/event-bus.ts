@@ -1,6 +1,6 @@
 /**
- * Event Bus - 用于模块间通信的事件总线
- * 提供发布-订阅模式，解耦模块间依赖
+ * Event bus for module-to-module communication.
+ * Implements a simple publish/subscribe pattern to reduce coupling.
  */
 
 type EventHandler<T = unknown> = (data: T) => void;
@@ -9,10 +9,10 @@ class EventBus {
   private events: Record<string, EventHandler<unknown>[]> = {};
 
   /**
-   * 订阅事件
-   * @param event 事件名称
-   * @param handler 事件处理函数
-   * @returns 取消订阅的函数
+   * Subscribe to an event.
+   * @param event Event name
+   * @param handler Event handler
+   * @returns Unsubscribe function
    */
   subscribe<T>(event: string, handler: EventHandler<T>) {
     if (!this.events[event]) {
@@ -20,14 +20,14 @@ class EventBus {
     }
     this.events[event].push(handler as EventHandler<unknown>);
     
-    // 返回取消订阅函数
+    // Return an unsubscribe function.
     return () => this.unsubscribe(event, handler);
   }
 
   /**
-   * 取消订阅事件
-   * @param event 事件名称
-   * @param handler 事件处理函数
+   * Unsubscribe from an event.
+   * @param event Event name
+   * @param handler Event handler
    */
   unsubscribe<T>(event: string, handler: EventHandler<T>) {
     if (!this.events[event]) return;
@@ -35,9 +35,9 @@ class EventBus {
   }
 
   /**
-   * 发布事件
-   * @param event 事件名称
-   * @param data 事件数据
+   * Publish an event.
+   * @param event Event name
+   * @param data Event payload
    */
   publish<T>(event: string, data: T) {
     if (!this.events[event]) return;
@@ -45,8 +45,8 @@ class EventBus {
   }
 
   /**
-   * 清除特定事件的所有订阅
-   * @param event 事件名称
+   * Clear all handlers for a given event.
+   * @param event Event name
    */
   clear(event: string) {
     if (this.events[event]) {
@@ -55,14 +55,14 @@ class EventBus {
   }
 
   /**
-   * 清除所有事件订阅
+   * Clear all event handlers.
    */
   clearAll() {
     this.events = {};
   }
 }
 
-// 导出单例
+// Export a singleton instance.
 export const eventBus = new EventBus();
 
 export default eventBus;

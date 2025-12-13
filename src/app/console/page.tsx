@@ -9,7 +9,7 @@ export default function ConsolePage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Welcome to ZGI Console</h1>
+        <h1 className="text-3xl font-bold">Welcome to the Console</h1>
         <p className="text-muted-foreground">
           Manage your AI-powered workflows and integrations
         </p>

@@ -12,13 +12,13 @@ export default function AuthLayout({ children }: PropsWithChildren) {
         {/* Logo and brand */}
         <div className="mb-8 flex flex-col items-center space-y-4">
           <div className="flex items-center space-x-3">
-            <Icons.ZGI className="h-10 w-10 text-primary" />
+            <Icons.Logo className="h-10 w-10 text-primary" />
             <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              ZGI
+              Llama Web
             </span>
           </div>
           <p className="text-center text-sm text-muted-foreground max-w-sm">
-            Powerful AI-driven platform for intelligent automation and insights
+            Modern web scaffold for fast product delivery
           </p>
         </div>
         
@@ -28,7 +28,7 @@ export default function AuthLayout({ children }: PropsWithChildren) {
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-muted-foreground">
           <div>
-            &copy; {new Date().getFullYear()} ZGI. All rights reserved.
+            &copy; {new Date().getFullYear()} Llama Web. All rights reserved.
           </div>
         </div>
       </div>

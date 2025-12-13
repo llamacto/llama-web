@@ -6,11 +6,11 @@ import { queryClient } from '@/config';
 import { PropsWithChildren, useState } from 'react';
 
 /**
- * React Query Provider 组件
- * 为整个应用提供 React Query 功能
+ * React Query provider.
+ * Provides a QueryClient instance for the entire client application.
  */
 export function QueryProvider({ children }: PropsWithChildren) {
-  // 确保在客户端渲染时每个请求都有自己的 QueryClient 实例
+  // Ensure a stable QueryClient instance on the client.
   const [client] = useState(() => queryClient);
 
   return (
