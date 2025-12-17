@@ -4,14 +4,13 @@
  */
 
 export const ROUTES = {
-  // Site (Client) routes
+  // Public site routes
   SITE: {
     HOME: '/',
     ABOUT: '/about',
-    PRODUCTS: '/products',
     CONTACT: '/contact',
   },
-  
+
   // Auth routes
   AUTH: {
     LOGIN: '/login',
@@ -19,18 +18,13 @@ export const ROUTES = {
     FORGOT_PASSWORD: '/forgot-password',
     RESET_PASSWORD: '/reset-password',
   },
-  
+
   // Console (Admin) routes
   CONSOLE: {
     HOME: '/console',
     ANALYTICS: '/console/analytics',
     SETTINGS: '/console/settings',
-    USERS: '/console/users',
-    ORDERS: '/console/orders',
-    PRODUCTS: '/console/products',
-    FILTERS: '/console/filters',
-    TRASH: '/console/trash',
-  }
+  },
 } as const;
 
 // Type-safe route utility functions

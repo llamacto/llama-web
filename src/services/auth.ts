@@ -10,7 +10,6 @@ import type {
   AuthResponse,
   SystemFeatures,
   SetupStatus,
-  UserList,
 } from '@/types/auth';
 
 // Internal BFF endpoints (implemented as Next.js Route Handlers under /api/auth/*)
@@ -23,9 +22,6 @@ const AUTH_ENDPOINTS = {
   SETUP: '/auth/setup',
   SYSTEM_FEATURES: '/auth/system-features',
 } as const;
-
-// Generic backend proxy endpoint (implemented as Next.js Route Handler under /api/backend/*)
-const BACKEND_PROXY_PREFIX = '/backend';
 
 /**
  * Authentication service class
@@ -85,23 +81,12 @@ export class AuthService {
    * User profile operations
    */
   async getProfile(): Promise<User> {
-    return request.get<User>(`${BACKEND_PROXY_PREFIX}/console/api/account/profile`, this.getConfig());
-  }
-
-  async getProfileEx(): Promise<User> {
     const result = await request.get<{ user: User }>(AUTH_ENDPOINTS.ME, this.getConfig());
     return result.user;
   }
 
   async updateProfile(data: Partial<User>): Promise<User> {
-    return request.patch<User>(`${BACKEND_PROXY_PREFIX}/console/api/account/profile`, data, this.getConfig());
-  }
-
-  /**
-   * Account management (admin operations)
-   */
-  async getAccountList(page: number = 1, limit: number = 30): Promise<UserList> {
-    return request.get<UserList>(`${BACKEND_PROXY_PREFIX}/console/api/account-ex/list?page=${page}&limit=${limit}`, this.getConfig());
+    return request.patch<User>('/backend/api/user/profile', data, this.getConfig());
   }
 }
 
@@ -116,17 +101,13 @@ export const authApi = {
   getSetupStatus: () => authService.getSetupStatus(),
   setup: (data: SetupRequest) => authService.setup(data),
   getSystemFeatures: () => authService.getSystemFeatures(),
-  
+
   // Auth
   login: (credentials: LoginRequest & { remember?: boolean }) => authService.login(credentials),
   register: (userData: RegisterRequest) => authService.register(userData),
   logout: () => authService.logout(),
-  
+
   // Profile
   getProfile: () => authService.getProfile(),
-  getProfileEx: () => authService.getProfileEx(),
   updateProfile: (data: Partial<User>) => authService.updateProfile(data),
-  
-  // Admin
-  getAccountList: (page?: number, limit?: number) => authService.getAccountList(page, limit),
 } as const; 

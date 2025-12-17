@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LucideIcon, BarChart3, Settings, Home, Users, ShoppingCart, Package, ListFilter, Trash2, Bell, LogOut } from "lucide-react";
+import { LucideIcon, BarChart3, Settings, Home, Bell, LogOut } from "lucide-react";
 
 import { cn } from "@/utils";
 import { ROUTES } from "@/constants/routes";
@@ -33,21 +33,6 @@ const mainNavItems: NavItem[] = [
     href: ROUTES.CONSOLE.ANALYTICS,
     icon: BarChart3,
   },
-  {
-    title: "Users",
-    href: ROUTES.CONSOLE.USERS,
-    icon: Users,
-  },
-  {
-    title: "Orders",
-    href: ROUTES.CONSOLE.ORDERS,
-    icon: ShoppingCart,
-  },
-  {
-    title: "Products",
-    href: ROUTES.CONSOLE.PRODUCTS,
-    icon: Package,
-  },
 ];
 
 const secondaryNavItems: NavItem[] = [
@@ -55,16 +40,6 @@ const secondaryNavItems: NavItem[] = [
     title: "Settings",
     href: ROUTES.CONSOLE.SETTINGS,
     icon: Settings,
-  },
-  {
-    title: "Filters",
-    href: ROUTES.CONSOLE.FILTERS,
-    icon: ListFilter,
-  },
-  {
-    title: "Trash",
-    href: ROUTES.CONSOLE.TRASH,
-    icon: Trash2,
   },
 ];
 

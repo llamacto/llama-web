@@ -1,19 +1,11 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-export const ACCESS_TOKEN_COOKIE = 'llama_web_access_token';
-export const REFRESH_TOKEN_COOKIE = 'llama_web_refresh_token';
-
-const LEGACY_ACCESS_TOKEN_COOKIE = 'zgi_access_token';
-const LEGACY_REFRESH_TOKEN_COOKIE = 'zgi_refresh_token';
+export const ACCESS_TOKEN_COOKIE = 'scaffold_access_token';
+export const REFRESH_TOKEN_COOKIE = 'scaffold_refresh_token';
 
 export function getUpstreamBaseUrl(): string {
-  const base =
-    process.env.UPSTREAM_API_BASE ||
-    process.env.ZGI_API_BASE ||
-    process.env.NEXT_PUBLIC_UPSTREAM_API_BASE ||
-    process.env.NEXT_PUBLIC_ZGI_API_BASE ||
-    '';
+  const base = process.env.UPSTREAM_API_BASE || '';
 
   if (!base) {
     throw new Error('UPSTREAM_API_BASE is not configured');
@@ -24,20 +16,12 @@ export function getUpstreamBaseUrl(): string {
 
 export async function getAccessTokenFromCookies(): Promise<string | null> {
   const cookieStore = await cookies();
-  return (
-    cookieStore.get(ACCESS_TOKEN_COOKIE)?.value ??
-    cookieStore.get(LEGACY_ACCESS_TOKEN_COOKIE)?.value ??
-    null
-  );
+  return cookieStore.get(ACCESS_TOKEN_COOKIE)?.value ?? null;
 }
 
 export function clearAuthCookies(res: NextResponse): void {
   res.cookies.set(ACCESS_TOKEN_COOKIE, '', { path: '/', maxAge: 0 });
   res.cookies.set(REFRESH_TOKEN_COOKIE, '', { path: '/', maxAge: 0 });
-
-  // Clear legacy cookies for backwards compatibility.
-  res.cookies.set(LEGACY_ACCESS_TOKEN_COOKIE, '', { path: '/', maxAge: 0 });
-  res.cookies.set(LEGACY_REFRESH_TOKEN_COOKIE, '', { path: '/', maxAge: 0 });
 }
 
 export function setAuthCookies(
@@ -56,10 +40,8 @@ export function setAuthCookies(
   };
 
   res.cookies.set(ACCESS_TOKEN_COOKIE, tokens.access_token, common);
-  res.cookies.set(LEGACY_ACCESS_TOKEN_COOKIE, tokens.access_token, common);
 
   if (tokens.refresh_token) {
     res.cookies.set(REFRESH_TOKEN_COOKIE, tokens.refresh_token, common);
-    res.cookies.set(LEGACY_REFRESH_TOKEN_COOKIE, tokens.refresh_token, common);
   }
 }

@@ -1,112 +1,185 @@
-# Agent Guide
+# AI Agent Guide
 
-This project is a Next.js scaffold optimized for fast feature delivery with a clean separation between:
+> This document is designed for AI coding assistants (Cursor, Windsurf, GitHub Copilot, etc.) to understand and work with this codebase effectively.
 
-- A **public website** that can use SSR for SEO
-- A **console/admin app** that can stay client-rendered
+## Project Overview
 
-The key productivity feature is a built-in **BFF (Backend For Frontend)** layer using Next.js Route Handlers, enabling **httpOnly cookie sessions** and a single same-origin API surface.
+**LlamaFront AI Scaffold** - A production-ready Next.js scaffold optimized for rapid AI-assisted development.
 
-## What has been implemented
+| Tech | Version | Purpose |
+|------|---------|---------|
+| Next.js | 16.x | App Router, RSC, API Routes |
+| React | 19.x | UI Library |
+| TypeScript | 5.x | Type Safety |
+| Tailwind CSS | 4.x | Styling |
+| shadcn/ui | Latest | UI Components |
+| Zustand | 5.x | State Management |
+| React Query | 5.x | Server State |
+| next-intl | 4.x | i18n |
 
-### Cookie-based authentication (httpOnly)
+## Directory Structure
 
-Authentication is handled by internal endpoints under `/api/auth/*`:
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── (auth)/             # Auth route group (login, register)
+│   ├── (site)/             # Public site route group
+│   ├── api/                # API Route Handlers (BFF layer)
+│   │   ├── _lib/           # Shared API utilities
+│   │   ├── auth/           # Auth endpoints
+│   │   └── backend/        # Proxy to upstream API
+│   └── console/            # Admin dashboard
+├── components/
+│   ├── ui/                 # shadcn/ui primitives (DO NOT MODIFY)
+│   └── features/           # Business feature components
+├── config/                 # App configuration
+├── constants/              # Route constants, enums
+├── hooks/                  # Custom React hooks
+├── http/                   # HTTP client (axios wrapper)
+├── i18n/                   # Internationalization
+│   └── messages/           # Translation files (en.json, zh.json)
+├── providers/              # React context providers
+├── services/               # API service layer
+├── store/                  # Zustand stores
+├── types/                  # TypeScript type definitions
+└── utils/                  # Pure utility functions
+```
 
-- `POST /api/auth/login`
-- `POST /api/auth/logout`
-- `GET /api/auth/me`
-- `POST /api/auth/register`
-- `POST /api/auth/setup`
-- `GET /api/auth/setup-status`
-- `GET /api/auth/system-features`
+## Architecture Patterns
 
-All successful responses use a consistent envelope:
+### 1. BFF (Backend For Frontend)
 
-- `{ "data": ... }`
+All API calls go through Next.js Route Handlers under `/api/*`:
 
-### Generic backend proxy
+```
+Browser → /api/auth/login → Upstream API
+Browser → /api/backend/* → Upstream API (proxy)
+```
 
-A generic proxy exists at:
+**Benefits:**
+- No CORS issues (same-origin)
+- httpOnly cookie sessions (secure)
+- Hide upstream API from client
 
-- `/api/backend/[...path]`
+### 2. Authentication Flow
 
-It forwards requests to the upstream backend and automatically injects:
+```
+Login → POST /api/auth/login → Sets httpOnly cookies
+        └── scaffold_access_token
+        └── scaffold_refresh_token
 
-- `Authorization: Bearer <token>` from **httpOnly cookies**
+Logout → POST /api/auth/logout → Clears cookies
 
-### Transport-only HTTP client
+Session Check → GET /api/auth/me → Returns user or 401
+```
 
-`src/http/request.ts` is now transport-only:
+### 3. State Management
 
-- No `localStorage` token management
-- No redirects
-- No backend-specific response normalization
+- **Auth state**: `src/store/auth-store.ts` (Zustand + persist)
+- **Server state**: React Query for API data
+- **UI state**: `src/store/ui-store.ts` (Zustand)
 
-This keeps the HTTP layer reusable across projects.
+## Code Conventions
 
-### Service + store wiring
+### Must Follow
 
-- `src/services/auth.ts` calls the BFF endpoints (`/api/auth/*`) and the proxy (`/api/backend/*`)
-- `src/store/auth-store.ts` uses `/api/auth/me` to probe session state (cookie-driven)
-- `src/components/features/auth/login-form.tsx` passes the `remember` flag to `login(...)`
+- **Package manager**: `pnpm` only
+- **Comments**: English only
+- **Tests**: Place in `tests/` directory at project root
+- **Hot reload**: Do NOT restart dev server (auto-updates)
 
-## Why this improves developer efficiency
+### File Naming
 
-- **No CORS pain**: the browser only talks to same-origin `/api/*`.
-- **SSR-friendly auth**: session is stored in httpOnly cookies; server components and Route Handlers can read it.
-- **Less repetition**: auth/session logic is centralized in one BFF layer.
-- **Safer by default**: tokens never touch `localStorage`.
-- **Consistent DX**: internal APIs return `{ data: ... }`, so client code is predictable.
+- Components: `kebab-case.tsx` (e.g., `login-form.tsx`)
+- Hooks: `use-*.ts` (e.g., `use-mobile.ts`)
+- Types: `*.ts` in `types/` directory
+- Utils: `*.ts` in `utils/` directory
 
-## How to use (daily workflow)
+### Import Order
 
-### Environment variables
+```typescript
+// 1. React/Next imports
+import { useState } from 'react';
+import Link from 'next/link';
 
-You must configure the upstream backend base URL (server-side):
+// 2. Third-party libraries
+import { useQuery } from '@tanstack/react-query';
 
-- `UPSTREAM_API_BASE` (recommended)
+// 3. Internal imports (absolute paths)
+import { Button } from '@/components/ui/button';
+import { useAuthStore } from '@/store/auth-store';
+```
 
-Fallback (backward compatible):
+## Environment Variables
 
-- `ZGI_API_BASE`
-- `NEXT_PUBLIC_UPSTREAM_API_BASE`
-- `NEXT_PUBLIC_ZGI_API_BASE`
+### Required
 
-Optional:
+```bash
+UPSTREAM_API_BASE=https://your-backend.com/api
+```
 
-- `NEXT_PUBLIC_API_URL` (browser baseURL, defaults to `/api`)
-- `INTERNAL_API_URL` (server-side absolute URL for axios, defaults to `http://localhost:3000/api`)
+### Optional
 
-### Authentication flow
+```bash
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=/api
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXX
+```
 
-- The login page posts to `/api/auth/login`.
-- The Route Handler calls the upstream login endpoint, then fetches the profile.
-- The Route Handler sets httpOnly cookies:
-  - `llama_web_access_token`
-  - `llama_web_refresh_token` (if provided)
+## Common Tasks
 
-### Calling upstream APIs from the client
+### Adding a New Page
 
-Prefer calling the proxy so cookies are used and tokens remain server-managed:
+1. Create file in `src/app/(site)/page-name/page.tsx`
+2. Add route to `src/constants/routes.ts`
+3. Add translations to `src/i18n/messages/*.json`
 
-- `GET /api/backend/console/api/account-ex/list?page=1&limit=30`
+### Adding a New API Endpoint
 
-In client code, this is already supported via `AuthService.getAccountList()`.
+1. Create folder in `src/app/api/endpoint-name/`
+2. Add `route.ts` with HTTP method handlers
+3. Use `getAccessTokenFromCookies()` for auth
 
-### SSR vs CSR guidance
+### Adding a New Component
 
-- **Public website**: can use SSR/Server Components. For authenticated server reads, prefer calling internal endpoints via `fetch` to `/api/auth/me` or through server-only helpers.
-- **Console/admin**: keep CSR. Use Zustand + React Query and call `/api/*` endpoints.
+1. UI primitives → Use shadcn/ui: `npx shadcn@latest add [component]`
+2. Feature components → Create in `src/components/features/[feature]/`
 
-## Codebase conventions (for humans and AI agents)
+### Adding a New Service
 
-- Use **pnpm** for dependency management.
-- Do **not** start or restart the dev server automatically; the environment is hot-updated.
-- Keep code comments in **English only**.
-- Prefer feature code to depend on **services** or **hooks**, not directly on low-level HTTP.
-- Tests must be placed under the `tests/` directory (do not put tests in business modules).
+1. Create in `src/services/[name].ts`
+2. Use `request` from `@/http` for API calls
+3. Export typed functions
 
-## Notes
+## API Response Format
 
-If you have a specific reference link for the `agents.md` format you want to match, share it and this document can be aligned exactly with that style.
+All BFF endpoints return consistent format:
+
+```typescript
+// Success
+{ "data": { ... } }
+
+// Error
+{ "error": "message", "code": "ERROR_CODE" }
+```
+
+## Do NOT
+
+- Modify files in `src/components/ui/` (shadcn/ui managed)
+- Use `localStorage` for tokens (use httpOnly cookies)
+- Add business-specific logic to scaffold (keep generic)
+- Create test files in business modules (use `tests/`)
+- Use Chinese in code comments
+- Generate `.sh` or `.md` files unless explicitly requested
+
+## Quick Reference
+
+| Action | Command |
+|--------|---------|
+| Install deps | `pnpm install` |
+| Dev server | `pnpm dev` |
+| Build | `pnpm build` |
+| Type check | `pnpm type-check` |
+| Lint | `pnpm lint` |
+| Format | `pnpm format` |
+| Add UI component | `npx shadcn@latest add [name]` |

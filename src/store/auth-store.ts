@@ -153,53 +153,53 @@ const useAuthStoreBase = create<AuthState>()(
       
       refreshProfile: async () => {
         if (!get().isAuthenticated) return;
-        
+
         set({ isLoading: true });
-        
+
         try {
-          const user = await authService.getProfileEx();
+          const user = await authService.getProfile();
           set({ user, isLoading: false });
         } catch (error: unknown) {
-          set({ 
+          set({
             error: getErrorMessage(error, 'Failed to refresh profile'),
-            isLoading: false 
+            isLoading: false,
           });
-          
+
           // If profile fetch fails due to auth, logout
           if (getErrorStatus(error) === 401) {
             get().logout();
           }
         }
       },
-      
+
       initializeAuth: async () => {
         set({ isLoading: true });
-        
+
         try {
           // Load system features and setup status in parallel
           const [systemFeatures, setupStatus] = await Promise.all([
             authService.getSystemFeatures().catch(() => null),
             authService.getSetupStatus().catch(() => null),
           ]);
-          
-          set({ 
+
+          set({
             systemFeatures,
             setupStatus,
-            isSystemReady: true 
+            isSystemReady: true,
           });
 
           // Probe session on startup. If cookies are present, /auth/me will succeed.
           try {
-            const user = await authService.getProfileEx();
+            const user = await authService.getProfile();
             set({ user, isAuthenticated: true });
           } catch {
             set({ user: null, isAuthenticated: false });
           }
         } catch (error: unknown) {
           console.error('Auth initialization failed:', error);
-          set({ 
+          set({
             error: 'System initialization failed',
-            isSystemReady: false 
+            isSystemReady: false,
           });
         } finally {
           set({ isLoading: false });
@@ -237,23 +237,17 @@ export const useAuthStore = createSelectors(useAuthStoreBase);
 
 // Derived selectors for computed values
 export const authSelectors = {
-  isAdmin: (state: AuthState) => 
-    state.user?.account_role?.role_type === 'super_admin' || 
-    state.user?.account_role?.role_type === 'admin',
-  
-  isSuperAdmin: (state: AuthState) => 
-    state.user?.account_role?.role_type === 'super_admin',
-  
-  needsSetup: (state: AuthState) => 
-    state.setupStatus?.step === 'not_started',
-  
-  canRegister: (state: AuthState) => 
+  isAdmin: (state: AuthState) => state.user?.role === 'admin',
+
+  needsSetup: (state: AuthState) => state.setupStatus?.step === 'not_started',
+
+  canRegister: (state: AuthState) =>
     state.systemFeatures?.is_allow_register ?? false,
-  
-  hasEmailLogin: (state: AuthState) => 
+
+  hasEmailLogin: (state: AuthState) =>
     state.systemFeatures?.enable_email_password_login ?? true,
-  
-  hasSocialLogin: (state: AuthState) => 
+
+  hasSocialLogin: (state: AuthState) =>
     state.systemFeatures?.enable_social_oauth_login ?? false,
 };
 
