@@ -1,5 +1,5 @@
 // Authentication service layer
-// Implements clean architecture with proper error handling and type safety
+// Functional API pattern - stateless, pure functions
 
 import { request } from '@/http';
 import type {
@@ -12,8 +12,8 @@ import type {
   SetupStatus,
 } from '@/types/auth';
 
-// Internal BFF endpoints (implemented as Next.js Route Handlers under /api/auth/*)
-const AUTH_ENDPOINTS = {
+// API endpoints (BFF layer)
+const ENDPOINTS = {
   LOGIN: '/auth/login',
   LOGOUT: '/auth/logout',
   REGISTER: '/auth/register',
@@ -21,93 +21,50 @@ const AUTH_ENDPOINTS = {
   SETUP_STATUS: '/auth/setup-status',
   SETUP: '/auth/setup',
   SYSTEM_FEATURES: '/auth/system-features',
+  PROFILE: '/backend/api/user/profile',
 } as const;
 
 /**
- * Authentication service class
- * Provides clean interface for all authentication-related operations
- */
-export class AuthService {
-  private static instance: AuthService;
-
-  public static getInstance(): AuthService {
-    if (!AuthService.instance) {
-      AuthService.instance = new AuthService();
-    }
-    return AuthService.instance;
-  }
-
-  private getConfig() {
-    return {};
-  }
-
-  /**
-   * System setup and status
-   */
-  async getSetupStatus(): Promise<SetupStatus> {
-    return request.get<SetupStatus>(AUTH_ENDPOINTS.SETUP_STATUS, this.getConfig());
-  }
-
-  async setup(data: SetupRequest): Promise<AuthResponse> {
-    return request.post<AuthResponse>(AUTH_ENDPOINTS.SETUP, data, this.getConfig());
-  }
-
-  async getSystemFeatures(): Promise<SystemFeatures> {
-    return request.get<SystemFeatures>(AUTH_ENDPOINTS.SYSTEM_FEATURES, this.getConfig());
-  }
-
-  /**
-   * Authentication operations
-   */
-  async login(credentials: LoginRequest & { remember?: boolean }): Promise<User> {
-    const result = await request.post<{ user: User }>(AUTH_ENDPOINTS.LOGIN, credentials, this.getConfig());
-    return result.user;
-  }
-
-  async register(userData: RegisterRequest): Promise<AuthResponse> {
-    return request.post<AuthResponse>(AUTH_ENDPOINTS.REGISTER, userData, this.getConfig());
-  }
-
-  async logout(): Promise<void> {
-    try {
-      await request.post(AUTH_ENDPOINTS.LOGOUT, {}, this.getConfig());
-    } catch (error) {
-      // Even if logout fails on server, we should clear local state
-      console.warn('Logout request failed:', error);
-    }
-  }
-
-  /**
-   * User profile operations
-   */
-  async getProfile(): Promise<User> {
-    const result = await request.get<{ user: User }>(AUTH_ENDPOINTS.ME, this.getConfig());
-    return result.user;
-  }
-
-  async updateProfile(data: Partial<User>): Promise<User> {
-    return request.patch<User>('/backend/api/user/profile', data, this.getConfig());
-  }
-}
-
-// Singleton instance
-export const authService = AuthService.getInstance();
-
-/**
- * Convenience functions for direct usage
+ * Authentication API
+ * All methods are stateless pure functions
  */
 export const authApi = {
-  // Setup
-  getSetupStatus: () => authService.getSetupStatus(),
-  setup: (data: SetupRequest) => authService.setup(data),
-  getSystemFeatures: () => authService.getSystemFeatures(),
+  // System setup
+  getSetupStatus: () =>
+    request.get<SetupStatus>(ENDPOINTS.SETUP_STATUS),
 
-  // Auth
-  login: (credentials: LoginRequest & { remember?: boolean }) => authService.login(credentials),
-  register: (userData: RegisterRequest) => authService.register(userData),
-  logout: () => authService.logout(),
+  setup: (data: SetupRequest) =>
+    request.post<AuthResponse>(ENDPOINTS.SETUP, data),
+
+  getSystemFeatures: () =>
+    request.get<SystemFeatures>(ENDPOINTS.SYSTEM_FEATURES),
+
+  // Authentication
+  login: async (credentials: LoginRequest & { remember?: boolean }) => {
+    const result = await request.post<{ user: User }>(ENDPOINTS.LOGIN, credentials);
+    return result.user;
+  },
+
+  register: (data: RegisterRequest) =>
+    request.post<AuthResponse>(ENDPOINTS.REGISTER, data),
+
+  logout: async () => {
+    try {
+      await request.post(ENDPOINTS.LOGOUT, {});
+    } catch (error) {
+      console.warn('Logout request failed:', error);
+    }
+  },
 
   // Profile
-  getProfile: () => authService.getProfile(),
-  updateProfile: (data: Partial<User>) => authService.updateProfile(data),
-} as const; 
+  getProfile: async () => {
+    const result = await request.get<{ user: User }>(ENDPOINTS.ME);
+    return result.user;
+  },
+
+  updateProfile: (data: Partial<User>) =>
+    request.patch<User>(ENDPOINTS.PROFILE, data),
+} as const;
+
+// Type exports for external use
+export type AuthApi = typeof authApi; 

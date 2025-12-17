@@ -4,7 +4,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { createSelectors } from './utils/selectors';
-import { authService } from '@/services/auth';
+import { authApi } from '@/services/auth';
 import type { User, SystemFeatures, SetupStatus } from '@/types/auth';
 
 function getErrorMessage(err: unknown, fallback: string): string {
@@ -96,7 +96,7 @@ const useAuthStoreBase = create<AuthState>()(
         set({ isLoading: true, error: null });
         
         try {
-          const user = await authService.login({ email, password, remember });
+          const user = await authApi.login({ email, password, remember });
 
           set({ 
             user,
@@ -119,7 +119,7 @@ const useAuthStoreBase = create<AuthState>()(
         set({ isLoading: true, error: null });
         
         try {
-          const response = await authService.register({ name, email, password });
+          const response = await authApi.register({ name, email, password });
           
           if (response.result === 'success') {
             // After successful registration, auto-login
@@ -138,7 +138,7 @@ const useAuthStoreBase = create<AuthState>()(
         set({ isLoading: true });
         
         try {
-          await authService.logout();
+          await authApi.logout();
         } catch (error) {
           console.warn('Logout error:', error);
         } finally {
@@ -157,7 +157,7 @@ const useAuthStoreBase = create<AuthState>()(
         set({ isLoading: true });
 
         try {
-          const user = await authService.getProfile();
+          const user = await authApi.getProfile();
           set({ user, isLoading: false });
         } catch (error: unknown) {
           set({
@@ -178,8 +178,8 @@ const useAuthStoreBase = create<AuthState>()(
         try {
           // Load system features and setup status in parallel
           const [systemFeatures, setupStatus] = await Promise.all([
-            authService.getSystemFeatures().catch(() => null),
-            authService.getSetupStatus().catch(() => null),
+            authApi.getSystemFeatures().catch(() => null),
+            authApi.getSetupStatus().catch(() => null),
           ]);
 
           set({
@@ -190,7 +190,7 @@ const useAuthStoreBase = create<AuthState>()(
 
           // Probe session on startup. If cookies are present, /auth/me will succeed.
           try {
-            const user = await authService.getProfile();
+            const user = await authApi.getProfile();
             set({ user, isAuthenticated: true });
           } catch {
             set({ user: null, isAuthenticated: false });

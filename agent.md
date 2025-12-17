@@ -147,9 +147,56 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXX
 
 ### Adding a New Service
 
-1. Create in `src/services/[name].ts`
-2. Use `request` from `@/http` for API calls
-3. Export typed functions
+1. Create `src/services/[name].ts` using functional API pattern:
+
+```typescript
+// services/example.ts
+import { request } from '@/http';
+
+const ENDPOINTS = {
+  LIST: '/backend/api/examples',
+  DETAIL: (id: string) => `/backend/api/examples/${id}`,
+} as const;
+
+export const exampleApi = {
+  list: (params?: { page?: number }) =>
+    request.get<Example[]>(ENDPOINTS.LIST, { params }),
+  get: (id: string) =>
+    request.get<Example>(ENDPOINTS.DETAIL(id)),
+  create: (data: CreateExampleDto) =>
+    request.post<Example>(ENDPOINTS.LIST, data),
+  update: (id: string, data: UpdateExampleDto) =>
+    request.patch<Example>(ENDPOINTS.DETAIL(id), data),
+  delete: (id: string) =>
+    request.delete<void>(ENDPOINTS.DETAIL(id)),
+} as const;
+```
+
+2. Export from `src/services/index.ts`
+3. Create hooks in `src/hooks/use-[name].ts` that call the service
+
+### Adding Query Hooks
+
+Use query key factory pattern:
+
+```typescript
+// hooks/use-examples.ts
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { exampleApi } from '@/services';
+
+export const exampleKeys = {
+  all: ['examples'] as const,
+  lists: () => [...exampleKeys.all, 'list'] as const,
+  detail: (id: string) => [...exampleKeys.all, 'detail', id] as const,
+};
+
+export function useExamples() {
+  return useQuery({
+    queryKey: exampleKeys.lists(),
+    queryFn: () => exampleApi.list(),
+  });
+}
+```
 
 ## API Response Format
 
