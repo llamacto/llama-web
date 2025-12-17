@@ -110,31 +110,40 @@ function createAxiosInstance(baseURL?: string): AxiosInstance {
 // Default instance
 const defaultInstance = createAxiosInstance();
 
-// Request method wrapper, supports baseURL parameter
+// Cache for custom baseURL instances to avoid recreating on every request
+const instanceCache = new Map<string, AxiosInstance>();
+
+function getInstanceForBaseURL(baseURL?: string): AxiosInstance {
+  if (!baseURL) return defaultInstance;
+
+  let instance = instanceCache.get(baseURL);
+  if (!instance) {
+    instance = createAxiosInstance(baseURL);
+    instanceCache.set(baseURL, instance);
+  }
+  return instance;
+}
+
+// Request method wrapper
 export const request = {
   get: <T = unknown>(url: string, config?: RequestConfig): Promise<T> => {
-    const inst = config?.baseURL ? createAxiosInstance(config.baseURL) : defaultInstance;
-    return inst.get<unknown, T>(url, config);
+    return getInstanceForBaseURL(config?.baseURL).get<unknown, T>(url, config);
   },
-  
+
   post: <T = unknown>(url: string, data?: unknown, config?: RequestConfig): Promise<T> => {
-    const inst = config?.baseURL ? createAxiosInstance(config.baseURL) : defaultInstance;
-    return inst.post<unknown, T>(url, data, config);
+    return getInstanceForBaseURL(config?.baseURL).post<unknown, T>(url, data, config);
   },
-  
+
   put: <T = unknown>(url: string, data?: unknown, config?: RequestConfig): Promise<T> => {
-    const inst = config?.baseURL ? createAxiosInstance(config.baseURL) : defaultInstance;
-    return inst.put<unknown, T>(url, data, config);
+    return getInstanceForBaseURL(config?.baseURL).put<unknown, T>(url, data, config);
   },
-  
+
   delete: <T = unknown>(url: string, config?: RequestConfig): Promise<T> => {
-    const inst = config?.baseURL ? createAxiosInstance(config.baseURL) : defaultInstance;
-    return inst.delete<unknown, T>(url, config);
+    return getInstanceForBaseURL(config?.baseURL).delete<unknown, T>(url, config);
   },
-  
+
   patch: <T = unknown>(url: string, data?: unknown, config?: RequestConfig): Promise<T> => {
-    const inst = config?.baseURL ? createAxiosInstance(config.baseURL) : defaultInstance;
-    return inst.patch<unknown, T>(url, data, config);
+    return getInstanceForBaseURL(config?.baseURL).patch<unknown, T>(url, data, config);
   },
 };
 
