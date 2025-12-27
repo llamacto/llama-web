@@ -26,11 +26,11 @@ A modern, AI-powered frontend application scaffold designed for the AI era. Buil
 - **Hot Reload**: Instant feedback for AI-assisted iterative development
 - **Error Handling**: Clear error messages for AI debugging assistance
 
-## 🆕 最新更新 (v2.0.0)
+## 🆕 最新更新 (v2.1.0)
 
-- ✅ **Next.js 16.0.3** - 最新稳定版
-- ✅ **React 19.2.0** - 最新特性支持
-- ✅ **Tailwind CSS 4.1.17** - 全新版本
+- ✅ **Next.js 16.1.1** - 最新稳定版
+- ✅ **React 19.2.3** - 最新特性支持
+- ✅ **Tailwind CSS 4.1.18** - 最新版本
 - ✅ **性能优化** - 生产环境配置优化
 - ✅ **架构文档** - 完整的优化指南
 
